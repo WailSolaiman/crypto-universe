@@ -43,11 +43,6 @@ const App = () => {
                         Crypto Universe <br /> All rights reserved 2022 -
                         W.Solaiman
                     </Typography.Title>
-                    <Space>
-                        <Link to="/">Home</Link>
-                        <Link to="/cryptocurrencies">Cryptocurrencies</Link>
-                        <Link to="/news">News</Link>
-                    </Space>
                 </div>
             </div>
         </div>
