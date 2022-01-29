@@ -23,12 +23,13 @@ a:hover {
 }
 
 .navbar {
-    flex: 0.2;
+    position: relative;
+    width: 320px;
     background-color: rgb(0, 21, 41);
 }
 
 .main {
-    flex: 0.8;
+    position: relative;
     width: 100%;
 }
 
@@ -37,28 +38,49 @@ a:hover {
 }
 
 .nav-container {
-    position: fixed;
-    left: 0;
-    margin: 10px;
+    position: relative;
     height: 100vh;
-    margin: 0px;
     background-color: rgb(0, 21, 41);
 }
 
 .logo-container {
     background-color: #001529;
     display: flex;
+    flex-direction: column;
     padding: 20px;
     align-items: center;
     width: 100%;
 }
 
+.logo-title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 .logo {
-    margin: 0 0 0 15px;
+    margin: 15px 0;
 }
 
 .logo a {
     color: white;
+}
+
+.ant-menu {
+    font-size: 20px;
+    width: 218px;
+}
+
+.ant-menu-item {
+    padding: 0 20px !important;
 }
 
 .menu-control-container {
@@ -78,66 +100,6 @@ a:hover {
     align-items: center;
 }
 
-@media screen and (max-width: 1300px) {
-    .main {
-        margin-left: 50px;
-    }
-}
-
-@media screen and (max-width: 1170px) {
-    .main {
-        margin-left: 50px;
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    .main {
-        margin-left: 100px;
-    }
-}
-
-@media screen and (max-width: 800px) {
-    .app {
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .navbar {
-        flex: 1;
-    }
-
-    .main {
-        flex: 1;
-        margin-top: 90px;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-
-    .nav-container {
-        height: 8vh;
-        position: fixed;
-        width: 100%;
-        z-index: 100;
-        background-color: var(--bgSecondary);
-    }
-
-    .menu-control-container {
-        display: block !important;
-    }
-
-    .ant-menu {
-        position: absolute;
-        right: 0px;
-    }
-
-    .home-title {
-        font-size: 1.4rem !important;
-    }
-
-    .show-more {
-        font-size: 1.3rem !important;
-    }
-}
 
 .coin-detail-container {
     margin: 30px;
@@ -267,42 +229,19 @@ a:hover {
     background-color: var(--bgSecondary);
 }
 
-@media screen and (max-width: 1000px) {
-    .stats-container {
-        flex-direction: column;
-    }
-
-    .coin-desc-link {
-        flex-direction: column;
-    }
-
-    .stats-container h2 {
-        margin-top: 0px;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .coin-links {
-        padding: 0px;
-    }
-
-    .coin-detail-container {
-        margin: 0;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .heading {
-        margin-top: 20px;
-    }
-}
-
 .select-news {
-    width: 180px;
+    width: 300px;
 }
 
 .news-card {
     min-height: 300px !important;
+}
+
+.news-container {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .news-image-container {
@@ -312,16 +251,18 @@ a:hover {
 
 .news-title {
     width: 70%;
+    margin-bottom: 30px !important;
 }
 
 .news-image-container .img {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
 }
 
 .news-card p {
     color: black;
-    margin: 10px 0px !important;
+    margin: 30px 0px !important;
+    font-size: 16px;
 }
 
 .provider-container {
@@ -376,8 +317,8 @@ a:hover {
 }
 
 .search-crypto {
-    margin: 20px auto 30px auto;
-    width: 250px;
+    margin: 20px 0 20px 0;
+    width: 300px;
 }
 
 .crypto-card-container {
@@ -403,4 +344,96 @@ a:hover {
     flex-direction: column;
     padding: 20px;
     align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .stats-container {
+        flex-direction: column;
+    }
+
+    .coin-desc-link {
+        flex-direction: column;
+    }
+
+    .stats-container h2 {
+        margin-top: 0px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .app {
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .navbar {
+        width: 100%;
+    }
+
+    .nav-container {
+        height: 200px;
+        width: 100%;
+        z-index: 100;
+        background-color: var(--bgSecondary);
+    }
+
+    .menu-control-container {
+        display: block !important;
+    }
+
+    .home-title {
+        font-size: 1.4rem !important;
+    }
+
+    .show-more {
+        font-size: 1.3rem !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .heading {
+        margin-top: 20px;
+    }
+
+    .coin-links {
+        padding: 0px;
+    }
+
+    .coin-detail-container {
+        margin: 0;
+    }
+
+    .home-heading-container {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .news-container {
+        height: auto;
+    }
+
+    .news-image-container {
+        flex-direction: column;
+    }
+
+    .news-title {
+        width: 100%;
+    }
+
+    .provider-container {
+        flex-direction: column;
+    }
+
+    .provider-container > div {
+        margin-bottom: 5px;
+    }
+
+    .select-news {
+        width: 100%;
+    }
+
+    .search-crypto {
+        width: 100%;
+    }
 }
