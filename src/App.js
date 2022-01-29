@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Switch, Route, Link } from 'react-router-dom'
 import { Layout, Typography, Space } from 'antd'
 
 import {
@@ -6,7 +6,6 @@ import {
     Homepage,
     Cryptocurrencies,
     CryptoDetails,
-    Exchanges,
     News,
 } from './components'
 import './App.css'
@@ -20,29 +19,37 @@ const App = () => {
             <div className="main">
                 <Layout>
                     <div className="routes">
-                        <Routes>
-                            <Route exact path="/" component={<Homepage />} />
-                            <Route
-                                exact
-                                path="/exchanges"
-                                component={<Exchanges />}
-                            />
-                            <Route
-                                exact
-                                path="/cryptocurrencies"
-                                component={<Cryptocurrencies />}
-                            />
-                            <Route
-                                exact
-                                path="/crypto/:coinId"
-                                component={<CryptoDetails />}
-                            />
-                            <Route exact path="/news" component={<News />} />
-                        </Routes>
+                        <Switch>
+                            <Route exact path="/">
+                                <Homepage />
+                            </Route>
+                            <Route exact path="/cryptocurrencies">
+                                <Cryptocurrencies />
+                            </Route>
+                            <Route exact path="/crypto/:coinId">
+                                <CryptoDetails />
+                            </Route>
+                            <Route exact path="/news">
+                                <News />
+                            </Route>
+                        </Switch>
                     </div>
                 </Layout>
+                <div className="footer">
+                    <Typography.Title
+                        level={5}
+                        style={{ color: 'white', textAlign: 'center' }}
+                    >
+                        Crypto Universe <br /> All rights reserved 2022 -
+                        W.Solaiman
+                    </Typography.Title>
+                    <Space>
+                        <Link to="/">Home</Link>
+                        <Link to="/cryptocurrencies">Cryptocurrencies</Link>
+                        <Link to="/news">News</Link>
+                    </Space>
+                </div>
             </div>
-            <div className="footer"></div>
         </div>
     )
 }
