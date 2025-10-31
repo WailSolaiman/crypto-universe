@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-// Using CoinGecko API for crypto news - no API key required, no CORS issues
-const baseUrl = 'https://api.coingecko.com/api/v3'
+// Using CoinGecko API for crypto news with CORS proxy
+const baseUrl =
+    'https://api.allorigins.win/raw?url=https://api.coingecko.com/api/v3'
 
 export const cryptoNewsApi = createApi({
     reducerPath: 'cryptoNewsApi',

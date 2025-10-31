@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 // CoinGecko API with CORS proxy to avoid CORS issues
-const baseUrl = process.env.REACT_APP_COINGECKO_PROXY
-    ? `${process.env.REACT_APP_COINGECKO_PROXY}https://api.coingecko.com/api/v3`
-    : 'https://api.coingecko.com/api/v3'
+const baseUrl =
+    'https://api.allorigins.win/raw?url=https://api.coingecko.com/api/v3'
 
 export const cryptoApi = createApi({
     reducerPath: 'cryptoApi',
