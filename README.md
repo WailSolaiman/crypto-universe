@@ -20,7 +20,7 @@ A modern cryptocurrency tracking application built with React and Tailwind CSS.
 
 ## Website
 
-https://react-crypto-universe-wsolaiman.netlify.app/
+https://crypto-universe-gamma.vercel.app/
 
 ## Developer
 
