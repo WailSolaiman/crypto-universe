@@ -149,7 +149,7 @@ export const cryptoApiCoinLore = createApi({
                 const now = Date.now()
 
                 // Generate mock price history for the last 30 days
-                for (let i = 30; i >= 0; i--) {
+                for (let i = 30; i >= 0; i -= 1) {
                     const timestamp = now - i * 24 * 60 * 60 * 1000
                     const randomVariation = (Math.random() - 0.5) * 0.1 // ±5% variation
                     const price = basePrice * (1 + randomVariation)
