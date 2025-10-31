@@ -1,43 +1,61 @@
 import React from 'react'
-import { Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { Cryptocurrencies, News, Loader, GlobalStats } from './index'
 import { useGetCryptosQuery } from '../services/cryptoApi'
 
-const { Title } = Typography
-
 const Homepage = () => {
-    const { data, isFetching } = useGetCryptosQuery(10)
+    const { data, isFetching, error } = useGetCryptosQuery(10)
     const globalStats = data?.data?.stats
 
     if (isFetching) return <Loader />
 
+    if (error) {
+        return (
+            <div className="text-center p-5">
+                <h2 className="text-2xl font-bold text-white mb-4">
+                    Connection Error
+                </h2>
+                <p className="text-gray-300">
+                    Unable to load data. Please try again later.
+                </p>
+            </div>
+        )
+    }
+
     return (
-        <React.Fragment>
-            <Title level={2} className="heading">
+        <div className="space-y-8">
+            <h2 className="text-3xl font-bold text-accent-blue mb-6">
                 Global Crypto Stats
-            </Title>
+            </h2>
             <GlobalStats globalStats={globalStats} />
-            <div className="home-heading-container">
-                <Title level={2} className="home-title">
+
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-white">
                     Top 10 Cryptocurrencies in the world
-                </Title>
-                <Title level={3} className="show-more">
-                    <Link to="/cryptocurrencies">Show More</Link>
-                </Title>
+                </h2>
+                <Link
+                    to="/cryptocurrencies"
+                    className="text-accent-blue hover:text-accent-light transition-colors"
+                >
+                    Show More →
+                </Link>
             </div>
             <Cryptocurrencies simplified />
-            <div className="home-heading-container">
-                <Title level={2} className="home-title">
+
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-white">
                     Latest Crypto News
-                </Title>
-                <Title level={3} className="show-more">
-                    <Link to="/news">Show More</Link>
-                </Title>
+                </h2>
+                <Link
+                    to="/news"
+                    className="text-accent-blue hover:text-accent-light transition-colors"
+                >
+                    Show More →
+                </Link>
             </div>
             <News simplified />
-        </React.Fragment>
+        </div>
     )
 }
 

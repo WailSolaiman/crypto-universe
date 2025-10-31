@@ -1,92 +1,82 @@
-import React, { useState, useEffect } from 'react'
-import millify from 'millify'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Row, Col, Input, Typography } from 'antd'
-
+import millify from 'millify'
 import { useGetCryptosQuery } from '../services/cryptoApi'
 import { Loader } from './index'
 
-const { Title } = Typography
-
-const Cryptocurrencies = ({ simplified = false }) => {
+const Cryptocurrencies = ({ simplified }) => {
     const count = simplified ? 10 : 100
     const { data: cryptosList, isFetching } = useGetCryptosQuery(count)
-    const [cryptos, setCryptos] = useState(cryptosList?.data?.coins)
-    const [searchTerm, setSearchTerm] = useState('')
-
-    useEffect(() => {
-        const filtered = cryptosList?.data?.coins.filter((coin) =>
-            coin.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        setCryptos(filtered)
-    }, [cryptosList, searchTerm])
 
     if (isFetching) return <Loader />
 
     return (
-        <React.Fragment>
+        <div className="space-y-4">
             {!simplified && (
-                <div>
-                    <Title level={1}>Top 100 Cryptocurrencies</Title>
-                    <Title level={3}>
-                        Search a specific cryptocurrency to get started
-                    </Title>
-                    <div className="search-crypto">
-                        <Input
-                            placeholder="Search Cryptocurrency"
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-white">
+                        All Cryptocurrencies
+                    </h2>
                 </div>
             )}
-            <Row gutter={[32, 32]} className="crypto-card-container">
-                {cryptos?.map((currency) => (
-                    <Col
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {cryptosList?.data?.coins?.map((currency) => (
+                    <Link
                         key={currency.uuid}
-                        xs={24}
-                        sm={12}
-                        lg={6}
-                        className="crypto-card"
+                        to={`/crypto/${currency.uuid}`}
+                        className="bg-dark-card p-4 rounded-lg border border-gray-700 hover:border-accent-blue transition-colors"
                     >
-                        <Link to={`/crypto/${currency.uuid}`}>
-                            <Card
-                                title={`${currency.name}`}
-                                extra={
-                                    <img
-                                        className="crypto-image"
-                                        src={currency.iconUrl}
-                                        alt={currency.name}
-                                    />
-                                }
-                                hoverable
-                            >
-                                <p>
-                                    Rank: <b>{currency.rank}</b>
-                                </p>
-                                <p>
-                                    Symbol: <b>{currency.symbol}</b>
-                                </p>
-                                <p>
-                                    Price: <b>${millify(currency.price)}</b>
-                                </p>
-                                <p>
-                                    Market Cap:{' '}
-                                    <b>{millify(currency.marketCap)}</b>
-                                </p>
-                                <p>
-                                    Daily Change:{' '}
-                                    <b>{millify(currency.change)}%</b>
-                                </p>
-                                <p>
-                                    24h Volume:{' '}
-                                    <b>{millify(currency['24hVolume'])}</b>
-                                </p>
-                            </Card>
-                        </Link>
-                    </Col>
+                        <div className="flex justify-between items-start mb-3">
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={currency.iconUrl}
+                                    alt={currency.name}
+                                    className="w-8 h-8 rounded"
+                                />
+                                <div>
+                                    <h3 className="text-white font-semibold">
+                                        {currency.name}
+                                    </h3>
+                                    <p className="text-gray-400 text-sm">
+                                        {currency.symbol}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex justify-between">
+                                <span className="text-gray-400">Price:</span>
+                                <span className="text-white font-medium">
+                                    ${millify(currency.price)}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-gray-400">
+                                    Market Cap:
+                                </span>
+                                <span className="text-white font-medium">
+                                    ${millify(currency.marketCap)}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-gray-400">
+                                    Daily Change:
+                                </span>
+                                <span
+                                    className={`font-medium ${
+                                        parseFloat(currency.change) >= 0
+                                            ? 'text-green-400'
+                                            : 'text-red-400'
+                                    }`}
+                                >
+                                    {currency.change}%
+                                </span>
+                            </div>
+                        </div>
+                    </Link>
                 ))}
-            </Row>
-        </React.Fragment>
+            </div>
+        </div>
     )
 }
 

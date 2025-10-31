@@ -1,109 +1,70 @@
-import React, { useState } from 'react'
-import { Select, Typography, Row, Col, Avatar, Card } from 'antd'
-import moment from 'moment'
-
-import { useGetCryptosQuery } from '../services/cryptoApi'
+import React from 'react'
 import { useGetCryptoNewsQuery } from '../services/cryptoNewsApi'
 import { Loader } from './index'
 
-const demoImage =
-    'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=News'
-
-const { Text, Title } = Typography
-const { Option } = Select
-
 const News = ({ simplified }) => {
-    const [newsCategory, setNewsCategory] = useState('Cryptocurrency')
-    const { data } = useGetCryptosQuery(100)
-    const { data: cryptoNews } = useGetCryptoNewsQuery({
-        newsCategory,
+    const { data: cryptoNews, isFetching } = useGetCryptoNewsQuery({
+        newsCategory: 'Cryptocurrency',
         count: simplified ? 6 : 12,
     })
 
-    if (!cryptoNews?.value) return <Loader />
+    if (isFetching) return <Loader />
 
     return (
-        <Row gutter={[24, 24]}>
+        <div className="space-y-4">
             {!simplified && (
-                <Col span={24}>
-                    <Title level={1}>Cryptocurrencies Latest News</Title>
-                    <Title level={3}>
-                        Select a cryptocurrency to get started
-                    </Title>
-                    <Select
-                        showSearch
-                        className="select-news"
-                        placeholder="Select a Crypto"
-                        optionFilterProp="children"
-                        defaultValue="Cryptocurrency"
-                        onChange={(value) => setNewsCategory(value)}
-                        filterOption={(input, option) =>
-                            option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                        }
-                    >
-                        <Option value="Cryptocurrency">Cryptocurrency</Option>
-                        {data?.data?.coins?.map((currency) => (
-                            <Option value={currency.name} key={currency.uuid}>
-                                {currency.name}
-                            </Option>
-                        ))}
-                    </Select>
-                </Col>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-white">
+                        Latest Crypto News
+                    </h2>
+                </div>
             )}
-            {cryptoNews.value.map((news, i) => (
-                <Col xs={24} sm={12} lg={12} xl={8} key={i}>
-                    <Card hoverable className="news-card">
-                        <a href={news.url} target="_blank" rel="noreferrer">
-                            <div className="news-container">
-                                <div className="news-image-container">
-                                    <Title className="news-title" level={3}>
-                                        {news.name}
-                                    </Title>
-                                    <img
-                                        src={
-                                            news?.image?.thumbnail
-                                                ?.contentUrl || demoImage
-                                        }
-                                        alt=""
-                                    />
-                                </div>
-                                <p>
-                                    {news.description.length > 300
-                                        ? `${news.description.substring(
-                                              0,
-                                              300
-                                          )}...`
-                                        : news.description}
-                                </p>
-                                <div className="provider-container">
-                                    <div>
-                                        <Avatar
-                                            src={
-                                                news.provider[0]?.image
-                                                    ?.thumbnail?.contentUrl ||
-                                                demoImage
-                                            }
-                                            alt=""
-                                        />
-                                        <Text className="provider-name">
-                                            {news.provider[0]?.name}
-                                        </Text>
-                                    </div>
-                                    <Text>
-                                        <b>Published:</b>{' '}
-                                        {moment(news.datePublished)
-                                            .startOf('ss')
-                                            .fromNow()}
-                                    </Text>
-                                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {cryptoNews?.value?.map((news, i) => (
+                    <div
+                        key={i}
+                        className="bg-dark-card p-4 rounded-lg border border-gray-700"
+                    >
+                        <div className="flex justify-between items-start mb-3">
+                            <h3 className="text-white font-semibold text-lg">
+                                {news.name}
+                            </h3>
+                        </div>
+                        <p className="text-gray-300 mb-4 line-clamp-3">
+                            {news.description}
+                        </p>
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <img
+                                    src={
+                                        news?.image?.thumbnail?.contentUrl ||
+                                        '/placeholder-image.jpg'
+                                    }
+                                    alt={news.name}
+                                    className="w-8 h-8 rounded"
+                                />
+                                <span className="text-gray-400 text-sm">
+                                    {news.provider[0]?.name}
+                                </span>
                             </div>
+                            <span className="text-gray-400 text-sm">
+                                {new Date(
+                                    news.datePublished
+                                ).toLocaleDateString()}
+                            </span>
+                        </div>
+                        <a
+                            href={news.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-4 inline-block text-accent-blue hover:text-accent-light transition-colors"
+                        >
+                            Read more →
                         </a>
-                    </Card>
-                </Col>
-            ))}
-        </Row>
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

@@ -1,54 +1,56 @@
 {
-  "name": "crypto-universe",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@reduxjs/toolkit": "^1.7.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.18.4",
-    "axios": "^0.25.0",
-    "html-react-parser": "^1.4.5",
-    "millify": "^4.0.0",
-    "moment": "^2.29.1",
-    "react": "^17.0.2",
-    "react-chartjs-2": "^3.0.4",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-plugin-react": "^7.28.0",
-    "prettier": "^2.5.1"
-  }
+    "name": "crypto-universe",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@reduxjs/toolkit": "^2.0.1",
+        "@testing-library/jest-dom": "^6.1.4",
+        "@testing-library/react": "^14.1.2",
+        "@testing-library/user-event": "^14.5.1",
+        "axios": "^1.6.2",
+        "chart.js": "^4.5.1",
+        "html-react-parser": "^4.1.0",
+        "millify": "^5.0.1",
+        "moment": "^2.29.4",
+        "react": "^18.2.0",
+        "react-chartjs-2": "^5.2.0",
+        "react-dom": "^18.2.0",
+        "react-redux": "^8.1.3",
+        "react-router-dom": "^6.20.1",
+        "react-scripts": "5.0.1",
+        "typescript": "^5.3.3",
+        "web-vitals": "^3.5.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.21",
+        "eslint": "^7.32.0",
+        "eslint-plugin-react": "^7.28.0",
+        "postcss": "^8.5.6",
+        "prettier": "^2.5.1",
+        "tailwindcss": "^3.4.18"
+    }
 }

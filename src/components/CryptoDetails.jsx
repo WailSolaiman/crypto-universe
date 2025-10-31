@@ -1,212 +1,234 @@
-import React, { useState } from 'react'
+import React from 'react'
 import HTMLReactParser from 'html-react-parser'
 import { useParams } from 'react-router-dom'
 import millify from 'millify'
-import { Col, Row, Typography, Select } from 'antd'
-import {
-    MoneyCollectOutlined,
-    DollarCircleOutlined,
-    FundOutlined,
-    ExclamationCircleOutlined,
-    StopOutlined,
-    TrophyOutlined,
-    CheckOutlined,
-    NumberOutlined,
-    ThunderboltOutlined,
-} from '@ant-design/icons'
-
 import {
     useGetCryptoDetailsQuery,
     useGetCryptoHistoryQuery,
 } from '../services/cryptoApi'
 import { LineChart, Loader } from './index'
 
-const { Title, Text } = Typography
-const { Option } = Select
-
 const CryptoDetails = () => {
     const { coinId } = useParams()
-    const [timePeriod, setTimePeriod] = useState('7d')
+    // Set default time period to 1 year and remove time period selector
+    const timePeriod = '1y'
     const { data, isFetching } = useGetCryptoDetailsQuery(coinId)
-    const { data: coinHistory } = useGetCryptoHistoryQuery({
-        coinId,
-        timePeriod,
-    })
+    const { data: coinHistory, isFetching: isHistoryFetching } =
+        useGetCryptoHistoryQuery({
+            coinId,
+            timePeriod,
+        })
     const cryptoDetails = data?.data?.coin
 
     if (isFetching) return <Loader />
 
-    const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y']
+    // Add error handling for undefined data
+    if (!cryptoDetails) {
+        return (
+            <div className="text-center p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                    Error Loading Data
+                </h3>
+                <p className="text-gray-300">
+                    Unable to load cryptocurrency data. Please try again later.
+                </p>
+            </div>
+        )
+    }
 
     const stats = [
         {
             title: 'Price to USD',
-            value: `$ ${cryptoDetails?.price && millify(cryptoDetails?.price)}`,
-            icon: <DollarCircleOutlined />,
+            value: `$ ${
+                cryptoDetails?.price ? millify(cryptoDetails.price) : 'N/A'
+            }`,
         },
-        { title: 'Rank', value: cryptoDetails?.rank, icon: <NumberOutlined /> },
+        {
+            title: 'Rank',
+            value: cryptoDetails?.rank || 'N/A',
+        },
         {
             title: '24h Volume',
             value: `$ ${
-                cryptoDetails['24hVolume'] &&
-                millify(cryptoDetails['24hVolume'])
+                cryptoDetails?.['24hVolume']
+                    ? millify(cryptoDetails['24hVolume'])
+                    : 'N/A'
             }`,
-            icon: <ThunderboltOutlined />,
         },
         {
             title: 'Market Cap',
             value: `$ ${
-                cryptoDetails?.marketCap && millify(cryptoDetails?.marketCap)
+                cryptoDetails?.marketCap
+                    ? millify(cryptoDetails.marketCap)
+                    : 'N/A'
             }`,
-            icon: <DollarCircleOutlined />,
         },
         {
             title: 'All-time-high(daily avg.)',
             value: `$ ${
-                cryptoDetails?.allTimeHigh?.price &&
-                millify(cryptoDetails?.allTimeHigh?.price)
+                cryptoDetails?.allTimeHigh?.price
+                    ? millify(cryptoDetails.allTimeHigh.price)
+                    : 'N/A'
             }`,
-            icon: <TrophyOutlined />,
         },
     ]
 
     const genericStats = [
         {
             title: 'Number Of Markets',
-            value: cryptoDetails?.numberOfMarkets,
-            icon: <FundOutlined />,
+            value: cryptoDetails?.numberOfMarkets || 'N/A',
         },
         {
             title: 'Number Of Exchanges',
-            value: cryptoDetails?.numberOfExchanges,
-            icon: <MoneyCollectOutlined />,
+            value: cryptoDetails?.numberOfExchanges || 'N/A',
         },
         {
             title: 'Approved Supply',
-            value: cryptoDetails?.supply?.confirmed ? (
-                <CheckOutlined />
-            ) : (
-                <StopOutlined />
-            ),
-            icon: <ExclamationCircleOutlined />,
+            value: cryptoDetails?.supply?.confirmed ? 'Yes' : 'No',
         },
         {
             title: 'Total Supply',
             value: `$ ${
-                cryptoDetails?.supply?.total &&
-                millify(cryptoDetails?.supply?.total)
+                cryptoDetails?.supply?.total
+                    ? millify(cryptoDetails.supply.total)
+                    : 'N/A'
             }`,
-            icon: <ExclamationCircleOutlined />,
         },
         {
             title: 'Circulating Supply',
             value: `$ ${
-                cryptoDetails?.supply?.circulating &&
-                millify(cryptoDetails?.supply?.circulating)
+                cryptoDetails?.supply?.circulating
+                    ? millify(cryptoDetails.supply.circulating)
+                    : 'N/A'
             }`,
-            icon: <ExclamationCircleOutlined />,
         },
     ]
 
     return (
-        <Col className="coin-detail-container">
-            <Col className="coin-heading-container">
-                <Title level={2} className="coin-name">
-                    {data?.data?.coin.name} ({data?.data?.coin.symbol}) Price
-                </Title>
+        <div className="space-y-8">
+            {/* Coin Header */}
+            <div className="bg-dark-card p-8 rounded-lg border border-gray-700 text-center">
+                <h2 className="text-3xl font-bold text-accent-blue mb-4">
+                    {cryptoDetails.name} ({cryptoDetails.symbol}) Price
+                </h2>
                 <img
-                    src={data?.data?.coin.iconUrl}
-                    alt={data?.data?.coin.symbol}
-                    className="crypto-image-details"
+                    src={cryptoDetails.iconUrl}
+                    alt={cryptoDetails.symbol}
+                    className="w-20 h-20 rounded-lg mx-auto mb-4"
                 />
-                <p>
+                <p className="text-gray-300 text-lg">
                     {cryptoDetails.name} live price in US Dollar (USD). View
                     value statistics, market cap and supply.
                 </p>
-            </Col>
-            <Select
-                defaultValue="7d"
-                className="select-timeperiod"
-                placeholder="Select Timeperiod"
-                onChange={(value) => setTimePeriod(value)}
-            >
-                {time.map((date) => (
-                    <Option key={date}>{date}</Option>
-                ))}
-            </Select>
-            <LineChart
-                coinHistory={coinHistory}
-                currentPrice={millify(cryptoDetails?.price)}
-                coinName={cryptoDetails?.name}
-            />
-            <Col className="stats-container">
-                <Col className="coin-value-statistics">
-                    <Col className="coin-value-statistics-heading">
-                        <Title level={3} className="coin-details-heading">
-                            {cryptoDetails.name} Value Statistics
-                        </Title>
-                        <p>
-                            An overview showing the statistics of{' '}
-                            {cryptoDetails.name}, such as the base and quote
-                            currency, the rank, and trading volume.
-                        </p>
-                    </Col>
-                    {stats.map(({ icon, title, value }, index) => (
-                        <Col className="coin-stats" key={index}>
-                            <Col className="coin-stats-name">
-                                <Text>{icon}</Text>
-                                <Text>{title}</Text>
-                            </Col>
-                            <Text className="stats">{value}</Text>
-                        </Col>
-                    ))}
-                </Col>
-                <Col className="other-stats-info">
-                    <Col className="coin-value-statistics-heading">
-                        <Title level={3} className="coin-details-heading">
-                            Other Stats Info
-                        </Title>
-                        <p>
-                            An overview showing the statistics of{' '}
-                            {cryptoDetails.name}, such as the base and quote
-                            currency, the rank, and trading volume.
-                        </p>
-                    </Col>
-                    {genericStats.map(({ icon, title, value }, index) => (
-                        <Col className="coin-stats" key={index}>
-                            <Col className="coin-stats-name">
-                                <Text>{icon}</Text>
-                                <Text>{title}</Text>
-                            </Col>
-                            <Text className="stats">{value}</Text>
-                        </Col>
-                    ))}
-                </Col>
-            </Col>
-            <Col className="coin-desc-link">
-                <Row className="coin-desc">
-                    <Title level={3} className="coin-details-heading">
+            </div>
+
+            {/* Chart */}
+            {isHistoryFetching ? (
+                <div className="bg-dark-card p-8 rounded-lg border border-gray-700 text-center">
+                    <Loader />
+                    <p className="text-gray-300 mt-4">Loading chart data...</p>
+                </div>
+            ) : (
+                <LineChart
+                    coinHistory={coinHistory}
+                    currentPrice={millify(cryptoDetails?.price)}
+                    coinName={cryptoDetails?.name}
+                />
+            )}
+
+            {/* Statistics */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Value Statistics */}
+                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
+                    <h3 className="text-xl font-bold text-white mb-4">
+                        {cryptoDetails.name} Value Statistics
+                    </h3>
+                    <p className="text-gray-300 mb-6">
+                        An overview showing the statistics of{' '}
+                        {cryptoDetails.name}, such as the base and quote
+                        currency, the rank, and trading volume.
+                    </p>
+                    <div className="space-y-4">
+                        {stats.map(({ title, value }, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-between items-center py-3 border-b border-gray-700"
+                            >
+                                <span className="text-gray-400">{title}</span>
+                                <span className="text-white font-semibold">
+                                    {value}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Other Stats */}
+                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
+                    <h3 className="text-xl font-bold text-white mb-4">
+                        Other Stats Info
+                    </h3>
+                    <p className="text-gray-300 mb-6">
+                        An overview showing the statistics of{' '}
+                        {cryptoDetails.name}, such as the base and quote
+                        currency, the rank, and trading volume.
+                    </p>
+                    <div className="space-y-4">
+                        {genericStats.map(({ title, value }, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-between items-center py-3 border-b border-gray-700"
+                            >
+                                <span className="text-gray-400">{title}</span>
+                                <span className="text-white font-semibold">
+                                    {value}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Description and Links */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Description */}
+                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
+                    <h3 className="text-xl font-bold text-white mb-4">
                         What is {cryptoDetails.name}?
-                    </Title>
-                    {HTMLReactParser(cryptoDetails.description)}
-                </Row>
-                <Col className="coin-links">
-                    <Title level={3} className="coin-details-heading">
+                    </h3>
+                    <div className="text-gray-300 prose prose-invert">
+                        {HTMLReactParser(cryptoDetails.description)}
+                    </div>
+                </div>
+
+                {/* Links */}
+                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
+                    <h3 className="text-xl font-bold text-white mb-4">
                         {cryptoDetails.name} Links
-                    </Title>
-                    {cryptoDetails.links?.map((link) => (
-                        <Row className="coin-link" key={link.name}>
-                            <Title level={5} className="link-name">
-                                {link.type}
-                            </Title>
-                            <a href={link.url} target="_blank" rel="noreferrer">
-                                {link.name}
-                            </a>
-                        </Row>
-                    ))}
-                </Col>
-            </Col>
-        </Col>
+                    </h3>
+                    <div className="space-y-3">
+                        {cryptoDetails.links?.map((link) => (
+                            <div
+                                key={link.name}
+                                className="flex justify-between items-center py-2"
+                            >
+                                <span className="text-gray-400">
+                                    {link.type}
+                                </span>
+                                <a
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-accent-blue hover:text-accent-light transition-colors"
+                                >
+                                    {link.name}
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

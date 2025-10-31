@@ -1,5 +1,4 @@
-import { Switch, Route } from 'react-router-dom'
-import { Layout, Typography } from 'antd'
+import { Routes, Route } from 'react-router-dom'
 
 import {
     Navbar,
@@ -12,37 +11,28 @@ import './App.css'
 
 const App = () => {
     return (
-        <div className="app">
-            <div className="navbar">
-                <Navbar />
-            </div>
-            <div className="main">
-                <Layout>
-                    <div className="routes">
-                        <Switch>
-                            <Route exact path="/">
-                                <Homepage />
-                            </Route>
-                            <Route exact path="/cryptocurrencies">
-                                <Cryptocurrencies />
-                            </Route>
-                            <Route exact path="/crypto/:coinId">
-                                <CryptoDetails />
-                            </Route>
-                            <Route exact path="/news">
-                                <News />
-                            </Route>
-                        </Switch>
-                    </div>
-                </Layout>
-                <div className="footer">
-                    <Typography.Title
-                        level={5}
-                        style={{ color: 'white', textAlign: 'center' }}
-                    >
+        <div className="app min-h-screen bg-dark-primary">
+            <Navbar />
+            <div className="main pt-16 min-h-screen">
+                <div className="routes p-8 max-w-7xl mx-auto">
+                    <Routes>
+                        <Route path="/" element={<Homepage />} />
+                        <Route
+                            path="/cryptocurrencies"
+                            element={<Cryptocurrencies />}
+                        />
+                        <Route
+                            path="/crypto/:coinId"
+                            element={<CryptoDetails />}
+                        />
+                        <Route path="/news" element={<News />} />
+                    </Routes>
+                </div>
+                <div className="footer bg-dark-secondary border-t border-gray-700 py-6">
+                    <h5 className="text-white text-center text-sm">
                         Crypto Universe <br /> All rights reserved 2022 -
                         W.Solaiman
-                    </Typography.Title>
+                    </h5>
                 </div>
             </div>
         </div>

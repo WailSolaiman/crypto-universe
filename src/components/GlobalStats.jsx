@@ -1,41 +1,46 @@
-import { Col, Row, Statistic } from 'antd'
 import millify from 'millify'
 import React from 'react'
 
-const GlobalStats = ({ globalStats, span = 12 }) => {
+const GlobalStats = ({ globalStats }) => {
+    if (!globalStats) {
+        return <div className="text-gray-300">Loading global statistics...</div>
+    }
+
     return (
-        <Row>
-            <Col span={span}>
-                <Statistic
-                    title="Total Cryptocurrencies"
-                    value={globalStats.totalCoins}
-                />
-            </Col>
-            <Col span={span}>
-                <Statistic
-                    title="Total Exchanges"
-                    value={millify(globalStats.totalExchanges)}
-                />
-            </Col>
-            <Col span={span}>
-                <Statistic
-                    title="Total Market Cap"
-                    value={millify(globalStats.totalMarketCap)}
-                />
-            </Col>
-            <Col span={span}>
-                <Statistic
-                    title="Total 24h Volume"
-                    value={millify(globalStats.total24hVolume)}
-                />
-            </Col>
-            <Col span={span}>
-                <Statistic
-                    title="Total Markets"
-                    value={millify(globalStats.totalMarkets)}
-                />
-            </Col>
-        </Row>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="bg-dark-card p-4 rounded-lg border border-gray-700">
+                <h3 className="text-gray-400 text-sm mb-2">
+                    Total Cryptocurrencies
+                </h3>
+                <p className="text-white text-xl font-bold">
+                    {globalStats.totalCoins || 0}
+                </p>
+            </div>
+            <div className="bg-dark-card p-4 rounded-lg border border-gray-700">
+                <h3 className="text-gray-400 text-sm mb-2">Total Exchanges</h3>
+                <p className="text-white text-xl font-bold">
+                    {millify(globalStats.totalExchanges || 0)}
+                </p>
+            </div>
+            <div className="bg-dark-card p-4 rounded-lg border border-gray-700">
+                <h3 className="text-gray-400 text-sm mb-2">Total Market Cap</h3>
+                <p className="text-white text-xl font-bold">
+                    ${millify(globalStats.totalMarketCap || 0)}
+                </p>
+            </div>
+            <div className="bg-dark-card p-4 rounded-lg border border-gray-700">
+                <h3 className="text-gray-400 text-sm mb-2">Total 24h Volume</h3>
+                <p className="text-white text-xl font-bold">
+                    ${millify(globalStats.total24hVolume || 0)}
+                </p>
+            </div>
+            <div className="bg-dark-card p-4 rounded-lg border border-gray-700">
+                <h3 className="text-gray-400 text-sm mb-2">Total Markets</h3>
+                <p className="text-white text-xl font-bold">
+                    {millify(globalStats.totalMarkets || 0)}
+                </p>
+            </div>
+        </div>
     )
 }
 

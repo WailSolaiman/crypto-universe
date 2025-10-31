@@ -1,23 +1,27 @@
 # Crypto Universe
 
-## Introduction
+A modern cryptocurrency tracking application built with React and Tailwind CSS.
 
-Explore the World of Cryptocurrency using React, Redux Toolkit, Antd Framework and React ChartJs. Fetching crypto data,
-global stats, and the latest crypto news from specialized Rapid APIs.
+## Features
 
-## App Features
+-   **Real-time Crypto Data** - Track prices, market caps, and trends
+-   **Interactive Charts** - 1-year price history with beautiful visualizations
+-   **Global Statistics** - Market overview with total market cap and volume
+-   **Mobile Responsive** - Clean design that works on all devices
+-   **Dark Theme** - Easy on the eyes interface
 
-- Creating a User Interface using Ant Design.
-- Working with React ChartJs to design linear chart for cryptos.
-- Fetching data from unlimited sources using Redux Toolkit and RapidAPI.
+## Tech Stack
 
-[Coin Ranking API](https://rapidapi.com/Coinranking/api/coinranking1/)
-[Bing News Search API](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/bing-news-search1/)
+-   React with Hooks
+-   Redux Toolkit & RTK Query
+-   Tailwind CSS
+-   Chart.js for data visualization
+-   CoinGecko API for crypto data
 
 ## Website
 
-[https://react-crypto-universe-wsolaiman.netlify.app/](https://react-crypto-universe-wsolaiman.netlify.app/)
+https://react-crypto-universe-wsolaiman.netlify.app/
 
 ## Developer
 
-Wail Solaiman - [https://github.com/WailSolaiman](https://github.com/WailSolaiman)
+Wail Solaiman - [GitHub](https://github.com/WailSolaiman)
