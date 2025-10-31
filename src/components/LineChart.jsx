@@ -23,11 +23,16 @@ ChartJS.register(
 )
 
 const LineChart = ({ coinHistory, currentPrice, coinName }) => {
+    console.log('LineChart Debug:', { coinHistory, currentPrice, coinName })
+
     if (!coinHistory?.data?.history) {
         return (
             <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
                 <div className="text-center text-gray-400">
                     Chart data not available
+                </div>
+                <div className="text-center text-gray-500 text-sm mt-2">
+                    History data: {coinHistory ? 'exists' : 'null'}
                 </div>
             </div>
         )

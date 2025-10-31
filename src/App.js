@@ -1,12 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import {
-    Navbar,
-    Homepage,
-    Cryptocurrencies,
-    CryptoDetails,
-    News,
-} from './components'
+import { Navbar, Homepage, Cryptocurrencies, CryptoDetails } from './components'
 import './App.css'
 
 const App = () => {
@@ -25,7 +19,6 @@ const App = () => {
                             path="/crypto/:coinId"
                             element={<CryptoDetails />}
                         />
-                        <Route path="/news" element={<News />} />
                     </Routes>
                 </div>
                 <div className="footer bg-dark-secondary border-t border-gray-700 py-6">

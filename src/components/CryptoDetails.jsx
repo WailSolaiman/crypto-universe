@@ -5,14 +5,14 @@ import millify from 'millify'
 import {
     useGetCryptoDetailsQuery,
     useGetCryptoHistoryQuery,
-} from '../services/cryptoApi'
+} from '../services/cryptoApiCoinLore'
 import { LineChart, Loader } from './index'
 
 const CryptoDetails = () => {
     const { coinId } = useParams()
     // Set default time period to 1 year and remove time period selector
     const timePeriod = '1y'
-    const { data, isFetching } = useGetCryptoDetailsQuery(coinId)
+    const { data, isFetching, error } = useGetCryptoDetailsQuery(coinId)
     const { data: coinHistory, isFetching: isHistoryFetching } =
         useGetCryptoHistoryQuery({
             coinId,
@@ -20,10 +20,12 @@ const CryptoDetails = () => {
         })
     const cryptoDetails = data?.data?.coin
 
+    console.log('CryptoDetails Debug:', { coinId, data, error, cryptoDetails })
+
     if (isFetching) return <Loader />
 
     // Add error handling for undefined data
-    if (!cryptoDetails) {
+    if (error || !cryptoDetails) {
         return (
             <div className="text-center p-8">
                 <h3 className="text-2xl font-bold text-white mb-4">
@@ -32,6 +34,12 @@ const CryptoDetails = () => {
                 <p className="text-gray-300">
                     Unable to load cryptocurrency data. Please try again later.
                 </p>
+                <p className="text-gray-400 text-sm mt-2">Coin ID: {coinId}</p>
+                {error && (
+                    <p className="text-gray-400 text-sm mt-2">
+                        Error: {error.message || 'Unknown error'}
+                    </p>
+                )}
             </div>
         )
     }

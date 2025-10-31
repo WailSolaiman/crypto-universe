@@ -55,16 +55,6 @@ const Navbar = () => {
                         >
                             Cryptocurrencies
                         </Link>
-                        <Link
-                            to="/news"
-                            className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                                isActive('/news')
-                                    ? 'bg-accent-blue text-white'
-                                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                            }`}
-                        >
-                            News
-                        </Link>
                     </div>
 
                     {/* Mobile menu button */}
@@ -119,17 +109,6 @@ const Navbar = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Cryptocurrencies
-                        </Link>
-                        <Link
-                            to="/news"
-                            className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                                isActive('/news')
-                                    ? 'bg-accent-blue text-white'
-                                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                            }`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            News
                         </Link>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Cryptocurrencies, News, Loader, GlobalStats } from './index'
-import { useGetCryptosQuery } from '../services/cryptoApi'
+import { Cryptocurrencies, Loader, GlobalStats } from './index'
+import { useGetCryptosQuery } from '../services/cryptoApiCoinLore'
 
 const Homepage = () => {
     const { data, isFetching, error } = useGetCryptosQuery(10)
@@ -42,19 +42,6 @@ const Homepage = () => {
                 </Link>
             </div>
             <Cryptocurrencies simplified />
-
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">
-                    Latest Crypto News
-                </h2>
-                <Link
-                    to="/news"
-                    className="text-accent-blue hover:text-accent-light transition-colors"
-                >
-                    Show More →
-                </Link>
-            </div>
-            <News simplified />
         </div>
     )
 }
