@@ -1,12 +1,16 @@
-import React from 'react'
-import HTMLReactParser from 'html-react-parser'
 import { useParams } from 'react-router-dom'
 import millify from 'millify'
 import {
     useGetCryptoDetailsQuery,
     useGetCryptoHistoryQuery,
 } from '../services/cryptoApiCoinLore'
-import { LineChart, Loader } from './index'
+import {
+    LineChart,
+    Loader,
+    CoinHeader,
+    StatsCard,
+    DescriptionAndLinks,
+} from './index'
 
 const CryptoDetails = () => {
     const { coinId } = useParams()
@@ -115,20 +119,7 @@ const CryptoDetails = () => {
     return (
         <div className="space-y-8">
             {/* Coin Header */}
-            <div className="bg-dark-card p-8 rounded-lg border border-gray-700 text-center">
-                <h2 className="text-3xl font-bold text-accent-blue mb-4">
-                    {cryptoDetails.name} ({cryptoDetails.symbol}) Price
-                </h2>
-                <img
-                    src={cryptoDetails.iconUrl}
-                    alt={cryptoDetails.symbol}
-                    className="w-20 h-20 rounded-lg mx-auto mb-4"
-                />
-                <p className="text-gray-300 text-lg">
-                    {cryptoDetails.name} live price in US Dollar (USD). View
-                    value statistics, market cap and supply.
-                </p>
-            </div>
+            <CoinHeader cryptoDetails={cryptoDetails} />
 
             {/* Chart */}
             {isHistoryFetching ? (
@@ -147,95 +138,22 @@ const CryptoDetails = () => {
             {/* Statistics */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Value Statistics */}
-                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
-                    <h3 className="text-xl font-bold text-white mb-4">
-                        {cryptoDetails.name} Value Statistics
-                    </h3>
-                    <p className="text-gray-300 mb-6">
-                        An overview showing the statistics of{' '}
-                        {cryptoDetails.name}, such as the base and quote
-                        currency, the rank, and trading volume.
-                    </p>
-                    <div className="space-y-4">
-                        {stats.map(({ title, value }, index) => (
-                            <div
-                                key={index}
-                                className="flex justify-between items-center py-3 border-b border-gray-700"
-                            >
-                                <span className="text-gray-400">{title}</span>
-                                <span className="text-white font-semibold">
-                                    {value}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <StatsCard
+                    title={`${cryptoDetails.name} Value Statistics`}
+                    description={`An overview showing the statistics of ${cryptoDetails.name}, such as the base and quote currency, the rank, and trading volume.`}
+                    stats={stats}
+                />
 
                 {/* Other Stats */}
-                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
-                    <h3 className="text-xl font-bold text-white mb-4">
-                        Other Stats Info
-                    </h3>
-                    <p className="text-gray-300 mb-6">
-                        An overview showing the statistics of{' '}
-                        {cryptoDetails.name}, such as the base and quote
-                        currency, the rank, and trading volume.
-                    </p>
-                    <div className="space-y-4">
-                        {genericStats.map(({ title, value }, index) => (
-                            <div
-                                key={index}
-                                className="flex justify-between items-center py-3 border-b border-gray-700"
-                            >
-                                <span className="text-gray-400">{title}</span>
-                                <span className="text-white font-semibold">
-                                    {value}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <StatsCard
+                    title="Other Stats Info"
+                    description={`An overview showing the statistics of ${cryptoDetails.name}, such as the base and quote currency, the rank, and trading volume.`}
+                    stats={genericStats}
+                />
             </div>
 
             {/* Description and Links */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Description */}
-                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
-                    <h3 className="text-xl font-bold text-white mb-4">
-                        What is {cryptoDetails.name}?
-                    </h3>
-                    <div className="text-gray-300 prose prose-invert">
-                        {HTMLReactParser(cryptoDetails.description)}
-                    </div>
-                </div>
-
-                {/* Links */}
-                <div className="bg-dark-card p-6 rounded-lg border border-gray-700">
-                    <h3 className="text-xl font-bold text-white mb-4">
-                        {cryptoDetails.name} Links
-                    </h3>
-                    <div className="space-y-3">
-                        {cryptoDetails.links?.map((link) => (
-                            <div
-                                key={link.name}
-                                className="flex justify-between items-center py-2"
-                            >
-                                <span className="text-gray-400">
-                                    {link.type}
-                                </span>
-                                <a
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-accent-blue hover:text-accent-light transition-colors"
-                                >
-                                    {link.name}
-                                </a>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            <DescriptionAndLinks cryptoDetails={cryptoDetails} />
         </div>
     )
 }

@@ -1,5 +1,4 @@
 import millify from 'millify'
-import React from 'react'
 
 const GlobalStats = ({ globalStats }) => {
     if (!globalStats) {
